@@ -1,5 +1,5 @@
-#import "@preview/subpar:0.1.1"
-#import "@preview/physica:0.9.3": *
+#import "@preview/subpar:0.2.0"
+#import "@preview/physica:0.9.4": *
 
 #let stroke-color = luma(200)
 #let std-bibliography = bibliography
@@ -79,7 +79,7 @@
         #let v-space = v(2em, weak: true)
         #text(2em)[*#title*]
 
-        #v-space 
+        #v(0%) 
         #for author in authors {
           text(1.1em, author)
           v(0.7em, weak: true)
@@ -92,12 +92,16 @@
         }
     ]))
   }
+  
   //Paragraph properties
   set par(spacing: 0.7em, leading: 0.7em, justify: true, linebreaks: "optimized", first-line-indent: 1.2em)
 
+  //Spacing around figures
+  show figure: set block(inset: (top: 0.2em, bottom: 0.7em))
+  
   //Properties for all headings (incl. subheadings)
   set heading(numbering: "1.1")
-  set heading(supplement: [Chapter ])
+  set heading(supplement: [Chapter])
   show heading: set text(hyphenate: false)
   show heading: it => {
     v(2.5em, weak: true)
@@ -111,13 +115,17 @@
     //Show chapters only on odd pages:
     if chapters-on-odd {
       pagebreak(to: "odd", weak: false)
+      v(15%)
     } 
     else if chapter-pagebreak {
       //Show chapters on new page
       colbreak(weak: true)
+      v(15%)
+    } else {
+      v(5%)
     }
     //Display heading as two lines, a "Chapter # \n heading"
-    v(10%)
+    
     if it.numbering != none {
       set text(size: 20pt)
       set par(first-line-indent: 0em)
@@ -125,10 +133,10 @@
       text("Chapter ")
       numbering("1.1", ..counter(heading).at(it.location()))
     }
-    v(1.4em, weak: true)
-    set text(size: 24pt)
+    v(1.3em, weak: true)
+    set text(size: 28pt)
     block(it.body)
-    v(1.8em, weak: true)
+    v(1.3em, weak: true)
   }
   
   //Show abstract
@@ -160,7 +168,7 @@
     show outline.entry.where(level: 1): it => {
       strong(it)
     }
-    set outline(indent: true, depth: 3)
+    set outline(indent: auto, depth: 3)
     table-of-contents
   }
   // Display list of figures
@@ -190,13 +198,12 @@
 
       // Are we on a page that starts a chapter?
       let target = heading.where(level: 1)
-      
 
       // Find the chapter of the section we are currently in.
       let before = query(target.before(here()))
-      if before.len() > 0 {
+      if before.len() >= 0 {
         let current = before.last()
-        if query(target).any(it => it.location().page() == current.location().page() + 1) {
+        if query(target).any(it => it.location().page() == current.location().page()+1) {
           return
         }
         let chapter_number = counter(heading).at(here()).first()
@@ -263,11 +270,20 @@
   }
   set math.equation(numbering: numbering-eq)
 
+
+  // Style table
   //Set table caption on top
   show figure.where(
     kind: table
   ): set figure.caption(position: top)
-  
+  show table.cell: set text(size: 10pt)
+  show table.cell.where(y: 0): set text(weight: "bold")
+  show table: set par(leading: 0.65em)
+  set table(
+    stroke: (_, y) => if y <= 1 { (top: 1pt) } else {(top: 0pt, bottom: 1pt)},
+    inset: (x: 0.1em,),
+  )
+
   //Style lists
   set enum(numbering: "1.a.i.", spacing: 0.8em, indent: 1.2em)
   set list(spacing: 0.8em, indent: 1.2em, marker: ([•], [◦], [--]))
@@ -280,7 +296,7 @@
     pagebreak()
     show std-bibliography: set text(0.95em)
     // Use default paragraph properties for bibliography.
-    show std-bibliography: set par(leading: 0.65em, justify: false, linebreaks: auto)
+    show std-bibliography: set par(leading: 0.65em, spacing: 0.75em, justify: false, linebreaks: auto)
     bibliography
   }
 }

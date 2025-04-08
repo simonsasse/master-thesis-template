@@ -1,5 +1,4 @@
-# NTNU thesis template
-Port of [thesis-NTNU](https://github.com/COPCSE-NTNU/thesis-NTNU) template to Typst. [main.pdf](https://github.com/saimnaveediqbal/thesis-NTNU-typst/blob/main/template/main.typ) contains a full usage example, see [example.pdf](https://github.com/saimnaveediqbal/thesis-NTNU-typst/blob/main/example.pdf) for a rendered pdf.
+# Minimalistic Thesis Template
 
 # Usage
 To use this template you need to import it at the beginning of your document: 
@@ -19,7 +18,7 @@ The template has many arguments you can specify:
 | `date` | `datetime.today()` | [datetime] | The date that will be displayed on the cover page. |
 | `date-format` | `[day padding:zero]/[month repr:numerical]/[year repr:full]` | [string] | The format for the date that will be displayed on the cover page. By default, the date will be displayed as `DD/MM/YYYY`. |
 | `abstract-en` | `none` | [content] | English abstract shown before main content. |
-| `abstract-no` | `none` | [content] | Norwegian abstract shown before main content. |
+| `abstract-other` | `none` | [array] | Array of abstract title and content in other language. |
 | `preface` | `none` | [content] | The preface for your work. The preface content is shown on its own separate page after the abstracts. |
 | `table-of-contents` | `outline()` | [content] | The table of contents. Setting this to `none` will disable the table of contents. |
 | `titlepage` | `false` | [bool] | Whether to display the titlepage or not. |
@@ -50,6 +49,7 @@ The template has many arguments you can specify:
 
 # Acknowledgements
 Thanks to: 
+- The creator of the [NTNU typst thesis template](https://typst.app/universe/package/nifty-ntnu-thesis/)
 - The creator of the [ILM template](https://github.com/talal/ilm/blob/main/lib.typ) which I used as the basis for this. 
 - The creators of the original [NTNU thesis template](https://github.com/COPCSE-NTNU/thesis-NTNU)
 - The creators of the [elsearticle template](https://github.com/maucejo/elsearticle) for their implementation of subfigures and appendix environment

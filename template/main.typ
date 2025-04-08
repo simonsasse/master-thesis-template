@@ -19,13 +19,14 @@
     serve (i) as a description of the document class, (ii) as an example of
     how to use it, and (iii) as a thesis template.
   ],
-  abstract-no: [
-    Malen `nifty-ntnu-thesis` er en typst-oversettelse av LaTeX-klassen `ntnuthesis`. Den er tilrettelagt for avhandlinger på alle nivåer –
+  abstract-other: (
+    "Zusammenfassung",
+    "Malen `nifty-ntnu-thesis` er en typst-oversettelse av LaTeX-klassen `ntnuthesis`. Den er tilrettelagt for avhandlinger på alle nivåer –
     bachelor, master og PhD – og er tilgjengelig på både norsk (bokmål og
     nynorsk) og engelsk (britisk og amerikansk). Dette dokumentet er ment å
     tjene (i) som en beskrivelse av dokumentklassen, (ii) som et eksempel på
-    bruken av den, og (iii) som en mal for avhandlingen.
-  ],
+    bruken av den, og (iii) som en mal for avhandlingen."
+  ),
 )
 
 = Introduction

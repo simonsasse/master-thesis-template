@@ -43,7 +43,7 @@
   date: datetime.today(),
   date-format: "[day padding:zero]/[month repr:numerical]/[year repr:full]",
   abstract-en: none,
-  abstract-no: none,
+  abstract-other: none,
   preface: none,
   table-of-contents: outline(),
   titlepage: true,
@@ -147,10 +147,10 @@
     ])
   }
   //Show abstract
-  if abstract-no != none {
+  if abstract-other != none {
     page([
-      = Sammendrag
-      #abstract-no
+      = #abstract-other.at(0)
+      #abstract-other.at(1)
     ])
   }
   //Show preface

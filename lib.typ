@@ -124,13 +124,12 @@
     } else {
       v(5%)
     }
-    //Display heading as two lines, a "Chapter # \n heading"
+    //Display heading without Chapter line
     
     if it.numbering != none {
       set text(size: 20pt)
       set par(first-line-indent: 0em)
-      
-      text("Chapter ")
+
       numbering("1.1", ..counter(heading).at(it.location()))
     }
     v(1.3em, weak: true)

@@ -125,15 +125,17 @@
       v(5%)
     }
     //Display heading without Chapter
+    // create variable for chapter number as e,pty string
+    let chapter_number = ""
     if it.numbering != none {
       set text(size: 20pt)
       set par(first-line-indent: 0em)
       // Display chapter number in a seperate line?!
-      // numbering("1.1", ..counter(heading).at(it.location()))
+      chapter_number = (numbering("1.1", ..counter(heading).at(it.location())) + " ")
     }
     v(1.3em, weak: true)
     set text(size: 28pt)
-    block((numbering("1.1", ..counter(heading).at(it.location())) +" "+ it.body))
+    block((chapter_number + it.body))
     v(1.3em, weak: true)
   }
   

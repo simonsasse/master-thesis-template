@@ -1,11 +1,10 @@
-//#import "lib.typ": *
-#import "@preview/nifty-ntnu-thesis:0.1.1": *
+#import "../lib.typ": *
+//#import "@preview/nifty-ntnu-thesis:0.1.1": *
 #let chapters-on-odd = false
 #show: nifty-ntnu-thesis.with(
-  title: [An NTNU Thesis typst template],
+  title: [Optimizing codec-enhanced 3DGS Feature-Plane compression],
   short-title: [],
-  authors: ("Anders Andersen",),
-  short-author: ("Andersen et. al."),
+  authors: ("Simon Sasse",),
   titlepage: true,
   chapters-on-odd: chapters-on-odd,
   bibliography: bibliography("thesis.bib"),
@@ -13,19 +12,17 @@
   table-index: (enabled: true, title: "Tables"),
   listing-index: (enabled: true, title: "Code listings"),
   abstract-en: [
-    The `nifty-ntnu-thesis` template is a typst port of the `ntnuthesis` LaTeX class. It can be used for theses at all levels –
-    bachelor, master and PhD – and is available in English (British and
-    American) and Norwegian (Bokmål and Nynorsk). This document is ment to
-    serve (i) as a description of the document class, (ii) as an example of
-    how to use it, and (iii) as a thesis template.
-  ],
+    This thesis presents novel methods for optimizing feature-planes in three-dimensional
+    graphics to improve codec-based compression. By identifying and exploiting redundancies
+    in 3DGS representations, the proposed approach enhances compression efficiency while
+    preserving visual quality. Extensive experiments demonstrate a significant reduction
+    in data rate with minimal quality loss, highlighting the potential of these techniques
+    for practical applications in graphics and multimedia. The work provides a comprehensive
+    analysis of algorithmic trade-offs and integration strategies with modern codec systems,
+    offering valuable insights for future developments in high-performance graphics compression.],
   abstract-other: (
     "Zusammenfassung",
-    "Malen `nifty-ntnu-thesis` er en typst-oversettelse av LaTeX-klassen `ntnuthesis`. Den er tilrettelagt for avhandlinger på alle nivåer –
-    bachelor, master og PhD – og er tilgjengelig på både norsk (bokmål og
-    nynorsk) og engelsk (britisk og amerikansk). Dette dokumentet er ment å
-    tjene (i) som en beskrivelse av dokumentklassen, (ii) som et eksempel på
-    bruken av den, og (iii) som en mal for avhandlingen."
+    "Diese Arbeit stellt neuartige Methoden zur Optimierung von Feature-Planes in dreidimensionalen Grafiken vor, um die codec-basierte Kompression zu verbessern. Durch die Identifikation und Ausnutzung von Redundanzen in 3DGS-Darstellungen wird ein Ansatz entwickelt, der die Kompressionseffizienz steigert und dabei die visuelle Qualität erhält. Umfangreiche Experimente belegen eine signifikante Reduktion der Datenrate bei nur minimalem Qualitätsverlust, was das Potenzial dieser Techniken für praktische Anwendungen in Grafik und Multimedia unterstreicht. Die Arbeit bietet eine umfassende Analyse der algorithmischen Kompromisse und Integrationsstrategien mit modernen Codec-Systemen und liefert wertvolle Einblicke für zukünftige Entwicklungen im Bereich der Hochleistungsgrafikkompression."
   ),
 )
 
@@ -34,6 +31,7 @@
 The original `ntnuthesis` template was created by the CoPCSE #footnote[#link("https://www.ntnu.no/wiki/display/copcse/Community+of+Practice+in+Computer+Science+Education+Home")] as a template applicable for theses at all study levels. 
 It is closely based on the standard LaTeX `report` document class as well as previous thesis templates. This typst port aims to replicate the look of the LaTeX template in typst.
 
+*Gaussian Splatting* @kerbl3Dgaussians is 
 The purpose of the present document is threefold. It should serve (i) as
 a description of the document class, (ii) as an example of how to use
 it, and (iii) as a thesis template.

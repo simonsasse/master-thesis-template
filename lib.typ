@@ -120,21 +120,20 @@
     else if chapter-pagebreak {
       //Show chapters on new page
       colbreak(weak: true)
-      v(15%)
+      v(15%) // Add  Vertical space before chapter
     } else {
       v(5%)
     }
-    //Display heading without Chapter line
-    
+    //Display heading without Chapter
     if it.numbering != none {
       set text(size: 20pt)
       set par(first-line-indent: 0em)
-
-      numbering("1.1", ..counter(heading).at(it.location()))
+      // Display chapter number in a seperate line?!
+      // numbering("1.1", ..counter(heading).at(it.location()))
     }
     v(1.3em, weak: true)
     set text(size: 28pt)
-    block(it.body)
+    block((numbering("1.1", ..counter(heading).at(it.location())) +" "+ it.body))
     v(1.3em, weak: true)
   }
   

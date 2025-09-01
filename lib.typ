@@ -1,5 +1,6 @@
 #import "@preview/subpar:0.2.0"
 #import "@preview/physica:0.9.4": *
+#import "@preview/abbr:0.2.3"
 
 #let stroke-color = luma(200)
 #let std-bibliography = bibliography
@@ -31,6 +32,18 @@
       }
   )
 }
+
+// // Add long and short caption ====
+// #let in-outline = state("in-outline", false)
+// #show outline: it => {
+//   in-outline.update(true)
+//   it
+//   in-outline.update(false)
+// }
+
+// #let flex-caption(long, short) = context if in-outline.get() { short } else { long }
+// // =================================
+
 
 #let nifty-ntnu-thesis(
   title: [Title],
@@ -66,31 +79,57 @@
 ) =  {
   set document(title: title, author: authors)
   // Set text fonts and sizes
-  set text(font: font, size: 11pt)
+  set text(font: font, size: 11pt, )
   show raw: set text(font: raw-font, size: 9pt)
   //Paper setup
   set page(
     paper: paper-size,
-    margin: (bottom: 4.5cm, top:4cm, left:4cm, right: 4cm),
+    margin: 1.4in
+    // margin: (bottom: 4.5cm, top:4cm, left:4cm, right: 4cm),
   )
   // Cover page
   if titlepage {
-    page(align(center + horizon, block(width: 90%)[
-        #let v-space = v(2em, weak: true)
-        #text(2em)[*#title*]
+    page(
+      align(center, text(16pt)[
+  #smallcaps[
+    Freie Universität Berlin \
+    Department of Mathematics and Computer Science
 
-        #v(0%) 
-        #for author in authors {
+    #v(1fr)
+    
+    Master's Thesis
+  ]
+
+  #v(1fr)
+  
+  #text(27pt)[
+    *#title*
+  ]
+
+  #v(1fr)
+  
+  #for author in authors {
           text(1.1em, author)
           v(0.7em, weak: true)
         }
-        
-        #if date != none {
-          v-space
-          // Display date as MMMM DD, YYYY  
-          text(1.1em, date.display(date-format))
-        }
-    ]))
+
+  #v(3fr)
+    
+  #datetime.today().display("[day].[month].[year]")
+
+  #v(1fr)
+  
+  #smallcaps[Supervisors \ ]
+  Dr. Ing. Cornelius Hellge #h(12pt) 
+  Soonbin Lee #h(12pt)
+  Prof. Dr. Peter Eisert 
+
+  #v(0.5fr)
+  
+  #smallcaps[Examinors \ ]
+  Prof. Dr. Peter Eisert  #h(12pt)
+  Prof. Dr. Unknown 
+]))
   }
   
   //Paragraph properties
@@ -104,7 +143,7 @@
   set heading(supplement: [Chapter])
   show heading: set text(hyphenate: false)
   show heading: it => {
-    v(2.5em, weak: true)
+    v(1.7em, weak: true)
     it
     v(1.5em, weak: true)
   }
@@ -171,20 +210,48 @@
     set outline(indent: auto, depth: 3)
     table-of-contents
   }
+  // CUSTOM FUNCTION TO EXRACT FIRST SENTENCE OF CAPTIONS FOR LIST OF FIGURES
+  let bold-first-sentence(entry) = {
+    let bodyS = entry.element.caption.body.fields()
+    let is-array = bodyS.at("text", default: 1) == 1
+    let first = if is-array { bodyS.at("children").at(0).fields().at("body", default: text("Error.")).at("text") } else { bodyS.at("text") }
+  
+    let s = first
+    // let s = entry.element.caption.body.at(0).text
+    let parts = s.split(".")
+    if parts.len() == 1 {
+      strong(entry)                     // no dot
+    } else {
+      let new-body = (parts.at(0) + ".")
+
+      entry.indented(entry.prefix(), new-body + sym.space + box(width: 1fr, entry.fill) + sym.space + sym.wj + entry.page())
+      // keep all other fields (numbering, level, target)
+    }
+  }
+ 
   // Display list of figures
   if figure-index.enabled {
+    show outline.entry: it => {
+      bold-first-sentence(it)
+    }
     outline(target: figure.where(kind: image), title: figure-index.title)
+    
   }
   
   // Display list of tables
   if table-index.enabled {
     outline(target: figure.where(kind: table), title: table-index.title)
   }
+  // Abbreviations
+  abbr.list()
+  abbr.config(style: it => text(black, it ))
+  // alternative: #abbr.load("example.csv")
 
   // Display list of code listings
   if listing-index.enabled {
     outline(target: figure.where(kind: raw), title: listing-index.title)
   }
+
 
   // Configure page numbering and footer.
   set page(
@@ -225,21 +292,44 @@
               grid(
                 columns: (4fr, 1fr),
                 align(left)[#chapter],
-                align(right)[#i],
               )
             } else {
               grid(
                 columns: (1fr, 4fr),
-                align(left)[#i],
+                "",
                 align(right)[#display-title],
               )
             }
         }
       }
     },
-    footer: ""
+    footer: context {
+      // Get current page number.
+      let i = counter(page).at(here()).first()
+      // Are we on a page that starts a chapter?
+      let target = heading.where(level: 1)
+      // Find the chapter of the section we are currently in.
+      let before = query(target.before(here()))
+      let current = before.last()
+      let is-odd = calc.odd(i)
+      if current.numbering != none {
+          if is-odd {
+            grid(
+              columns: (4fr, 1fr),
+              "",
+              align(right)[#i],
+            )
+          } else {
+            grid(
+              columns: (1fr, 4fr),
+              align(left)[#i],
+            )
+          }
+      }
+    }
   )
-  // Style code snippets
+
+    // Style code snippets
   // Display inline code in a small box that retains the correct baseline.
   show raw.where(block: false): box.with(
     inset: (x: 3pt, y: 0pt),
@@ -288,6 +378,7 @@
   set enum(numbering: "1.a.i.", spacing: 0.8em, indent: 1.2em)
   set list(spacing: 0.8em, indent: 1.2em, marker: ([•], [◦], [--]))
 
+
   show: main-matter
   body
   
@@ -296,7 +387,7 @@
     pagebreak()
     show std-bibliography: set text(0.95em)
     // Use default paragraph properties for bibliography.
-    show std-bibliography: set par(leading: 0.65em, spacing: 0.75em, justify: false, linebreaks: auto)
+    show std-bibliography: set par(leading: 0.65em, spacing: 1em, justify: false, linebreaks: auto, )
     bibliography
   }
 }
